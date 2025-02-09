@@ -36,6 +36,7 @@
         .box {
             width: 30%; /* Más estrecho para parecer rectángulos alargados */
             height: 150px;
+            padding: 8px;
             background-color: #d3d3d3;
             border: 1px solid #aaa;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -60,17 +61,17 @@
             this.observers = [];
         }
 
-        subscribe(o) {
-            this.observers.push(o);
+        subscribe(observer) {
+            this.observers.push(observer);
         }
 
-        unsubscribe(o) {
-            this.observers = this.observers.filter(e => e != o);
+        unsubscribe(observer) {
+            this.observers = this.observers.filter(e => e !== observer);
         }
 
-        notify(model) {
+        notify(data) {
             this.observers.forEach(observer => {
-                observer.notify(model);
+                observer.setText(data);
             })
         }
     }
@@ -83,42 +84,55 @@
 
         notify(text) {
             this.text = text;
-            super.notify(this);
+            super.notify(text);
         }
     }
 
-    class Div1Observer {
-        notify(subject) {
-            document.getElementById("div1").innerHTML = subject.text;
+
+    class DivObserver {
+        /**
+       * @param {HTMLElement} element - El elemento DOM a actualizar.
+       * @param {function} transformFn - Función que recibe la data y devuelve el string a mostrar.
+       */
+        constructor(element, Fn) {
+            this.element = element;
+            this.Fn = Fn;
+        }
+
+        setText(data) {
+            // Se aplica la función transformadora para obtener el contenido a mostrar.
+            this.element.innerHTML = this.Fn(data);
         }
     }
 
-    class Div2Observer {
-        notify(subject) {
-            document.getElementById("div2").innerHTML = subject.text.length;
-        }
-    }
-
-    class Div3Observer {
-        notify(subject) {
-            if(subject.text.search("cerveza") > 0) {
-                document.getElementById("div3").innerHTML = "Salud!";
-            }
-            else {
-                document.getElementById("div3").innerHTML = ":(";
-            }
-        }
-    }
-
+    // Inicialización del sujeto
     var textSubject = new TextSubject();
-    let miDiv1 = new Div1Observer();
-    let miDiv2 = new Div2Observer();
-    let miDiv3 = new Div3Observer();
 
-    textSubject.subscribe(miDiv1);
-    textSubject.subscribe(miDiv2);
-    textSubject.subscribe(miDiv3);
+    // Creación de observadores con su función transformadora respectiva:
+    // 1. div1 mostrará: "Texto: <data>"
+    let div1 = new DivObserver(
+        document.getElementById("div1"), 
+        data => `Texto: ${data}`
+    );
 
+    // 2. div2 mostrará la longitud del texto (data.length)
+    let div2 = new DivObserver(
+        document.getElementById("div2"), 
+        data => data.length
+    );
+
+    // 3. div3 mostrará "Salud!" si el texto contiene "cerveza", o ":(" en caso contrario.
+    let div3 = new DivObserver(
+        document.getElementById("div3"), 
+        data => data.search("cerveza") > 0 ? "Salud!" : ":("
+    );
+
+    // Suscribimos los observadores al sujeto
+    textSubject.subscribe(div1);
+    textSubject.subscribe(div2);
+    textSubject.subscribe(div3);
+
+    // Vinculamos el textarea con el sujeto para que notifique los cambios
     document.getElementById("mitexto").addEventListener("input", (event) => {
         textSubject.notify(event.target.value);
     });
