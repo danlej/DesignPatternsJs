@@ -69,9 +69,9 @@
             this.observers = this.observers.filter(e => e !== observer);
         }
 
-        notify(data) {
+        notify(textSubject) {
             this.observers.forEach(observer => {
-                observer.setText(data);
+                observer.setText(textSubject.text);
             })
         }
     }
@@ -84,7 +84,7 @@
 
         notify(text) {
             this.text = text;
-            super.notify(text);
+            super.notify(this);
         }
     }
 
@@ -112,19 +112,19 @@
     // 1. div1 mostrará: "Texto: <data>"
     let div1 = new DivObserver(
         document.getElementById("div1"), 
-        data => `Texto: ${data}`
+        data => data === "" ? "" : `Texto: ${data}`
     );
 
     // 2. div2 mostrará la longitud del texto (data.length)
     let div2 = new DivObserver(
         document.getElementById("div2"), 
-        data => data.length
+        data => data === "" ? "" : data.length
     );
 
     // 3. div3 mostrará "Salud!" si el texto contiene "cerveza", o ":(" en caso contrario.
     let div3 = new DivObserver(
         document.getElementById("div3"), 
-        data => data.search("cerveza") > 0 ? "Salud!" : ":("
+        data => data === "" ? "" : data.search("cerveza") > 0 ? "Salud!" : ":("
     );
 
     // Suscribimos los observadores al sujeto
