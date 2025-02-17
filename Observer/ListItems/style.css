@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+div {
+    /* max-width: 300px; */
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"] {
+    width: 94%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.container {
+    display: flex; /* Organiza los elementos en filas o columnas */
+    width: 90%;
+    max-width: 900px;
+    justify-content: space-between; /* Asegura que las dos columnas se distribuyan con espacio */
+    align-items: flex-start; /* Alinea las columnas al inicio */
+    gap: 20px; /* Espacio entre las columnas */
+}
+
+.form-section {
+    flex: 1; /* La sección del formulario ocupa un espacio flexible */
+    max-width: 400px; /* Ancho máximo del formulario */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+}
+
+.list-section {
+    flex: 1; /* Debería ser 2 si quiero que la sección de la lista ocupe más espacio que el formulario */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f4f4f4;
+    min-height: 200px; /* Asegura que tenga altura mínima */
+    box-sizing: border-box;
+}
+
